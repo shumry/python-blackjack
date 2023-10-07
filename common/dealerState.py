@@ -34,15 +34,15 @@ class DealerHand:
             self.state = const.BUSTED
             return
         
-        if (num_aces < 1):
-            self.score = raw_score
-
         if (len(self.display_hand) == 2 and raw_score == 11 and num_aces == 1):
             self.score = 21
             self.state = const.BLACKJACK
             return
 
-        self.score = raw_score if raw_score + 10 > 21 else raw_score + 10
+        if (num_aces < 1):
+            self.score = raw_score
+        else:
+            self.score = raw_score if raw_score + 10 > 21 else raw_score + 10
         
         if self.score >= 17:
             self.state = const.STAND
