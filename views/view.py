@@ -95,17 +95,10 @@ class View(tk.Tk):
         buttons_frame.pack()
         return
 
-    def _make_card(self, parent_frame, card_text="7_h"):
-        return
-
     def initCards(self):
         for elem in config.CARD_LIST:
             image = tk.PhotoImage(file=f'assets/playingCardImages/{elem}.png').subsample(4,4)
             self.cards[elem] = image
-        # card_drawing = tk.Canvas(parent_frame, width=60, height=90, bg="white")
-        # card_drawing.pack(padx=10, pady=10)
-        # card_drawing.create_rectangle(0, 0, 60, 90, fill="white", outline="black", width=2)
-        # card_drawing.create_text(50, 75, text=card_text, font=("Arial", 24), fill="black")
         return
     
     def rebuildPlayerHand(self, new_player_data):

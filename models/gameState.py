@@ -1,14 +1,15 @@
-import random
+from models.deck import Deck
+import config.gameConfig as config
 
 class GameState:
     def __init__(self):
         self.player = []
-        self.deck = ["7_h", "j_s", "1_s", "10_h"]
+        self.deck = Deck(config.NUM_DECKS)
         return
     
     def addCardToPlayer(self):
-        random.shuffle(self.deck)
-        self.player.append(self.deck[0])
+        drawn_card = self.deck.drawCard()
+        self.player.append(drawn_card)
         return
     
     def getPlayerHand(self):
