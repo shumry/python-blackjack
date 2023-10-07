@@ -4,7 +4,6 @@ SINGLE_DISPLAY_DECK =["1_c", "1_s", "1_d", "1_h", "2_c", "2_s", "2_d", "2_h", "3
 
 class Deck:
     def __init__(self, num_decks):
-        print("calling init decj")
         self.num_decks = num_decks
         self.display_deck = []
         self.setNewDeck()
