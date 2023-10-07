@@ -13,3 +13,4 @@ brew install python-tk
 ```
 
 ## Description
+This app is a simple BlackJack game between 1 player and a dealer
