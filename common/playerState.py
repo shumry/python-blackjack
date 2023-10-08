@@ -61,12 +61,6 @@ class PlayerHand:
         self.state = new_state
         return
 
-    def getValidActions(self):
-        if self.state == const.PENDING:
-            return [const.HIT, const.STAND]
-        else:
-            return [const.DEAL_NEXT_HAND]
-    
     # for testing
     def __repr__(self) -> str:
         return "Cards: " + str(self.display_hand) + " hand " + str(self.hand) + "canDouble:  " + str(self.canDouble)

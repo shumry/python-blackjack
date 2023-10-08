@@ -1,7 +1,7 @@
 from views.view import View
 from models.gameState import GameState
 import common.constants as const
-from time import sleep
+
 
 class Controller:
     def __init__(self):
@@ -12,47 +12,53 @@ class Controller:
         self.view.main()
 
     def handlePlayerAction(self, input_string):
-        print(input_string)
-
         if input_string == const.HIT:
-            new_state = self.model.addCardToPlayer()            
+            self.model.addCardToPlayer()
             self.view.rebuildPlayerHand(self.model.getPlayerHand())
-        
+            self.view.rebuildControlsPanel(self.model.getActions())
+
         elif input_string == const.STAND:
-            self.model.executeDealerTurn()
-            self.view.rebuildDealerHand(self.model.dealer)
-            
+            self.model.playerStands()
+            self.model.executeDealerTurn(self.rebuildDealerFrame)
+            self.view.rebuildControlsPanel(self.model.getActions())
+
         elif input_string == const.START_OVER:
             self.restartGame()
-        
+            self.view.updateScore(self.model.game_score, "Starting a new game...")
+
         elif input_string == const.DEAL_NEXT_HAND:
             self.dealNextHand()
-        
-        self.view.updateScore(self.model.player_score)
+
+        elif input_string == const.CONTINUE:
+            self.model.executeDealerTurn(self.rebuildDealerFrame)
+            self.view.rebuildControlsPanel(self.model.getActions())
+
+        did_round_end = self.model.didRoundEnd()
+
+        if (did_round_end):
+            self.view.updateScore(self.model.game_score, self.model.latest_results)
         return
+
+    def rebuildDealerFrame(self):
+        self.view.rebuildDealerHand(self.model.dealer)
 
     def dealNextHand(self):
         self.model.resetRound()
-        self.view.rebuildPlayerHand(self.model.player)
-        self.view.rebuildDealerHand(self.model.dealer)
-        
-        sleep(1)
-        
+        self.view.rebuildPlayerHand(self.model.getPlayerHand())
+        self.view.rebuildDealerHand(self.model.getDealerHand())
+
         self.model.addCardToPlayer()
         self.view.rebuildPlayerHand(self.model.getPlayerHand())
-        sleep(1)
-        print("added one card")
+
         self.model.addCardToDealer()
         self.view.rebuildDealerHand(self.model.getDealerHand())
-        # sleep(1)
+
         self.model.addCardToPlayer()
         self.view.rebuildPlayerHand(self.model.getPlayerHand())
+        self.view.rebuildControlsPanel(self.model.getActions())
         return
-    
+
     def restartGame(self):
-        print("in restartGame")
         self.model = GameState()
         self.dealNextHand()
-       
-
         return

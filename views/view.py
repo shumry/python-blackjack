@@ -5,12 +5,12 @@ import config.viewConfig as config
 from common.playerState import PlayerHand
 import common.constants as const
 
-
 class View(tk.Tk):
     def __init__(self, controller):
         super().__init__()
         self.c = controller
         self.cards = {}
+        self.info_box_messages = []
         self.initCards()
         self._make_background()
         self._make_dealer_frame(DealerHand())
@@ -98,14 +98,22 @@ class View(tk.Tk):
 
         return player_hand.max_score
 
-    def _make_info_box(self, score=0):
+    def _make_info_box(self, score=0, messages=[]):
         self.info_box_frame = ttk.Frame(self)
         self.info_box_frame.grid(row=0, column=1, sticky="nsew")
 
-        score_frame = ttk.Frame(self.info_box_frame)
-        text = ttk.Label(score_frame, text=f"Score: {score}")
-        text.pack()
-        score_frame.pack()
+        info_box_frame = ttk.Frame(self.info_box_frame)
+        score_text = ttk.Label(info_box_frame, text=f"Score: {score}")
+        score_text.pack()
+        
+        messages_frame = ttk.Frame(info_box_frame)
+        for message in messages:
+            message_widget = ttk.Label(messages_frame, text=message)
+            message_widget.pack()
+            
+        messages_frame.pack(pady=(5,0))
+        
+        info_box_frame.pack()
         return
 
     def _make_controls_panel(self, player_actions=[]):
@@ -157,10 +165,18 @@ class View(tk.Tk):
 
     def rebuildPlayerHand(self, new_player_data):
         self._make_player_frame(new_player_data)
-        self._make_controls_panel(new_player_data.getValidActions())
 
-    def updateScore(self, score):
-        self._make_info_box(score)
+    def rebuildControlsPanel(self, actions_list=[]):
+        self._make_controls_panel(actions_list)
+        
+    def updateScore(self, score, message):
+        if message != "":
+            self.info_box_messages.append(message)
+        
+        if len(self.info_box_messages) > 10:
+            self.info_box_messages.pop(0)
+            
+        self._make_info_box(score, self.info_box_messages)
 
     def rebuildDealerHand(self, new_dealer_data):
         self._make_dealer_frame(new_dealer_data)
