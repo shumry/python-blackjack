@@ -1,7 +1,6 @@
 from common.functions import getNumberValueFromCard
 import common.constants as const
 
-
 class PlayerHand:
     def __init__(self):
         self.display_hand = []
@@ -16,6 +15,7 @@ class PlayerHand:
 
     def addCard(self, newCard):
         if (self.state != const.PENDING):
+            print(self.state)
             print("Error, trying to add card in invalid state")
             return
         val, numAces = self.hand

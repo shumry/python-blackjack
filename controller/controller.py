@@ -1,7 +1,7 @@
 from views.view import View
 from models.gameState import GameState
 import common.constants as const
-
+import config.gameConfig as game_config
 
 class Controller:
     def __init__(self):
@@ -22,10 +22,6 @@ class Controller:
             self.model.executeDealerTurn(self.rebuildDealerFrame)
             self.view.rebuildControlsPanel(self.model.getActions())
 
-        elif input_string == const.START_OVER:
-            self.restartGame()
-            self.view.updateScore(self.model.game_score, "Starting a new game...")
-
         elif input_string == const.DEAL_NEXT_HAND:
             self.dealNextHand()
 
@@ -33,10 +29,27 @@ class Controller:
             self.model.executeDealerTurn(self.rebuildDealerFrame)
             self.view.rebuildControlsPanel(self.model.getActions())
 
-        did_round_end = self.model.didRoundEnd()
+        elif input_string == const.START_OVER:
+            self.restartGame()
+            self.view.updateScore(self.model.game_score,
+                                  "Starting a new game...")
+            return
+
+        elif input_string == const.GET_MATH:
+            _, _, results = self.model.getBestMove()
+            self.view.updateScore(self.model.game_score,
+                                  f"The math says...\n Move: Expected Score")
+
+            for move, ev in results.items():
+                self.view.updateScore(self.model.game_score, f"{move}: {ev * game_config.BASE_SCORE}")
+
+            return
+
+        did_round_end=self.model.didRoundEnd()
 
         if (did_round_end):
-            self.view.updateScore(self.model.game_score, self.model.latest_results)
+            self.view.updateScore(self.model.game_score,
+                                  self.model.latest_results)
         return
 
     def rebuildDealerFrame(self):
@@ -59,6 +72,6 @@ class Controller:
         return
 
     def restartGame(self):
-        self.model = GameState()
+        self.model=GameState()
         self.dealNextHand()
         return

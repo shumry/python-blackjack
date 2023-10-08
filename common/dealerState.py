@@ -1,4 +1,5 @@
 from common.functions import getNumberValueFromCard
+import config.gameConfig as game_config
 import common.constants as const
 
 class DealerHand:
@@ -44,6 +45,6 @@ class DealerHand:
         else:
             self.score = raw_score if raw_score + 10 > 21 else raw_score + 10
         
-        if self.score >= 17:
+        if self.score >= game_config.DEALER_STOP:
             self.state = const.STAND
         return
