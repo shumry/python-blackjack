@@ -8,7 +8,8 @@ class PlayerHand:
         # A representation of the score and number of aces (int, int)
         self.hand = (0, 0)
         self.max_score = 0
-        self.canDouble = self.checkAndSetCanDouble()
+        # Didn't have time to implement feature allowing player to double
+        # self.canDouble = self.checkAndSetCanDouble()
 
     def getDisplayHand(self):
         return self.display_hand
