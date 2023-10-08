@@ -1,6 +1,7 @@
 HIT = "Hit"
 STAND = "Stand"
 START_OVER = "Start a new game"
+GET_MATH = "Get math"
 
 PENDING = "Pending"
 BLACKJACK = "Blackjack"

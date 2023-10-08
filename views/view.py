@@ -144,7 +144,7 @@ class View(tk.Tk):
         game_actions_frame.grid(row=1, sticky='nsew')
 
         game_buttons_frame = ttk.Frame(game_actions_frame)
-        game_actions = [const.START_OVER]
+        game_actions = [const.START_OVER, const.GET_MATH]
 
         for action in game_actions:
             def func_to_run(x=action):

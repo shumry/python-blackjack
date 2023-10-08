@@ -1,5 +1,6 @@
+from common.calculator import Calculator
 from common.dealerState import DealerHand
-from models.deck import Deck
+from common.deck import Deck
 from common.playerState import PlayerHand
 import config.gameConfig as config
 import common.constants as const
@@ -15,6 +16,7 @@ class GameState:
         self.deck = Deck(config.NUM_DECKS)
         self.round_ended = False
         self.latest_results = ""
+        self.calculator = Calculator()
         return
 
     def resetRound(self):
@@ -106,3 +108,6 @@ class GameState:
 
         # if neither, show continue next hand
         return [const.DEAL_NEXT_HAND]
+
+    def getBestMove(self):
+        return self.calculator.evaluate(self.player, self.dealer, self.deck.math_deck)
