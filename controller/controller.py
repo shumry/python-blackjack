@@ -13,16 +13,19 @@ class Controller:
 
     def handlePlayerAction(self, input_string):
         if input_string == const.HIT:
+            self.view.updateScore(self.model.game_score, "Player hits")
             self.model.addCardToPlayer()
             self.view.rebuildPlayerHand(self.model.getPlayerHand())
             self.view.rebuildControlsPanel(self.model.getActions())
 
         elif input_string == const.STAND:
+            self.view.updateScore(self.model.game_score, "Player stands")
             self.model.playerStands()
             self.model.executeDealerTurn(self.rebuildDealerFrame)
             self.view.rebuildControlsPanel(self.model.getActions())
 
         elif input_string == const.DEAL_NEXT_HAND:
+            self.view.updateScore(self.model.game_score, "Dealing next hand...")
             self.dealNextHand()
 
         elif input_string == const.CONTINUE:
@@ -38,7 +41,7 @@ class Controller:
         elif input_string == const.GET_MATH:
             _, _, results = self.model.getBestMove()
             self.view.updateScore(self.model.game_score,
-                                  f"The math says...\n Move: Expected Score")
+                                  f"The math says...")
 
             for move, ev in results.items():
                 self.view.updateScore(self.model.game_score, f"{move}: {ev * game_config.BASE_SCORE}")

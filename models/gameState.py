@@ -6,7 +6,6 @@ import config.gameConfig as config
 import common.constants as const
 from time import sleep
 
-
 class GameState:
     def __init__(self):
         self.game_score = 0
@@ -24,7 +23,7 @@ class GameState:
         self.dealer = DealerHand()
         self.round_ended = False
 
-        if self.deck.getNumCardsRemaining() <= 15:
+        if self.deck.getNumCardsRemaining() <= config.RESHUFFLE_THRESHOLD:
             self.deck.reshuffleDeck()
 
     def addCardToPlayer(self):
@@ -34,10 +33,10 @@ class GameState:
 
     def updateGameScore(self, new_state):
         if new_state == const.BLACKJACK:
-            self.game_score += 15
+            self.game_score += config.BLACKJACK_SCORE_MULTIPLIER * config.BASE_SCORE
             self.latest_results = "Player got a BlackJack and won!"
         elif new_state == const.BUSTED:
-            self.game_score -= 10
+            self.game_score -= config.BASE_SCORE
             self.latest_results = "Player busted and lost"
 
     def addCardToDealer(self):
@@ -56,19 +55,19 @@ class GameState:
 
     def updateGameScoreFromDealerHand(self):
         if (self.dealer.state == const.BUSTED):
-            self.game_score += 10
+            self.game_score += config.BASE_SCORE
             self.latest_results = "The dealer busted and the player won!"
 
         elif (self.dealer.state == const.BLACKJACK):
-            self.game_score -= 10
+            self.game_score -= config.BASE_SCORE
             self.latest_results = "The dealer got a Blackjack and the player lost!"
 
         else:
             if self.player.max_score > self.dealer.score:
-                self.game_score += 10
+                self.game_score += config.BASE_SCORE
                 self.latest_results = "The player got a higher score and won!"
             elif self.player.max_score < self.dealer.score:
-                self.game_score -= 10
+                self.game_score -= config.BASE_SCORE
                 self.latest_results = "The player got a lower score and lost!"
             else:
                 self.latest_results = "It was a tie!"
